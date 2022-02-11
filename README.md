@@ -1,2 +1,2 @@
 # github-api
- It's github user search with their info.
+ It's a github user search with their info.
