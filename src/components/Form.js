@@ -1,21 +1,31 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
+import { UserContext } from "../context/userContext";
+import { useRequest } from "../api/request";
 
-const Form = ({ onSubmit, onReset }) => {
-  const [username, setUsername] = useState([]);
+const Form = () => {
+  const [username, setUsername] = useState("");
+  const { setValue } = useContext(UserContext);
+
+  const handleReset = () => {
+    setValue([]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // useRequest(`https://api.github.com/search/users?q=${username}`);
 
     axios
       .get(`https://api.github.com/search/users?q=${username}`)
       .then((response) => {
         if (response.data.total_count !== 0) {
-          onSubmit(response.data.items);
+          setValue(response.data.items);
         } else {
           alert("No user found, Try again");
         }
-      });
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -39,10 +49,16 @@ const Form = ({ onSubmit, onReset }) => {
         >
           Submit
         </button>
+        {/* {username.length === 0 ? } */}
         <button
-          onClick={onReset}
+          onClick={handleReset}
           type="reset"
-          className="mt-3 rounded border-2 border-red-600 bg-gray-600 p-2 text-lg text-white hover:bg-red-600 hover:text-white"
+          className="mt-3 rounded border-2 border-red-600 bg-gray-600 p-2 text-lg text-white  hover:bg-red-600 hover:text-white"
+          disabled={
+            username === 0
+              ? console.log("deactive", username)
+              : console.log("active", username)
+          }
         >
           Clear
         </button>
