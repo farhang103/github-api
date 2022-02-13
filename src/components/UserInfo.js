@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import Labels from "./label";
 
 const UserInfo = () => {
   const { login } = useParams();
@@ -10,12 +11,15 @@ const UserInfo = () => {
   const [repo, setRepo] = useState([]);
 
   useEffect(() => {
-    axios.get(`https://api.github.com/users/${login}`).then((res) => {
-      setUser(res.data);
-    });
+    axios
+      .get(`https://api.github.com/users/${login}`)
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((error) => console.log(error));
 
     axios.get(`https://api.github.com/users/${login}/repos`).then((repo) => {
-      setRepo(repo.data);
+      setRepo(repo.data).catch((error) => console.log(error));
     });
   }, [login]);
 
@@ -28,7 +32,6 @@ const UserInfo = () => {
         <label className="mr-2 text-lg">hireable : </label>
         <AiOutlineCheck />
       </div>
-
       <div className="grid w-full grid-cols-2 content-center border-2 p-4 ">
         <div className="mt-10 flex h-auto w-full flex-col items-center justify-center">
           <div className="h-44 w-44 ">
@@ -58,20 +61,7 @@ const UserInfo = () => {
           </label>
         </div>
       </div>
-      <div className="my-3 flex w-full flex-row items-center justify-center border-2 p-5">
-        <label className="mr-6 flex rounded-md bg-red-500 py-1 px-2 text-white">
-          Followers :<p className="ml-2">{user.followers}</p>
-        </label>
-        <label className="mr-6 flex rounded-md border-2 py-1 px-2">
-          Following :<p className="ml-2">{user.following}</p>
-        </label>
-        <label className="mr-6 flex rounded-md bg-green-600 py-1 px-2 text-white">
-          Public Repos :<p className="ml-2">{user.public_repos}</p>
-        </label>
-        <label className=" flex rounded-md bg-slate-800 py-1 px-2 text-white">
-          Public Gists :<p className="ml-2">{user.public_gists}</p>
-        </label>
-      </div>
+      {Labels(user)}
       {repo.map((item) => {
         return (
           <div

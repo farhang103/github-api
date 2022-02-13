@@ -4,19 +4,11 @@ import { UserContext } from "../context/userContext";
 import Form from "./Form";
 
 const Search = () => {
-  const [cards] = useState([]);
-  const { value, setValue } = useContext(UserContext);
-
-  const addNewCard = (cardInfo) => {
-    setValue(cards.concat(cardInfo));
-  };
-  const handleReset = () => {
-    setValue([]);
-  };
+  const { value } = useContext(UserContext);
 
   return (
     <div className="m-auto h-full w-4/6 ">
-      <Form onSubmit={addNewCard} onReset={handleReset} />
+      <Form />
 
       {/****************************** Profile **************************/}
       <div className="mt-6 grid w-full grid-cols-3 gap-4">
