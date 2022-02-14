@@ -1,6 +1,6 @@
 import React from "react";
 
-const Labels = (user) => {
+const Labels = ({ user }) => {
   return (
     <div className="my-3 flex w-full flex-row items-center justify-center border-2 p-5">
       <label className="mr-6 flex rounded-md bg-red-500 py-1 px-2 text-white">
