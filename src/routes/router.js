@@ -6,8 +6,11 @@ import { UserContext } from "../context/userContext";
 import Search from "../components/Search";
 
 const Router = () => {
-  const [value, setValue] = useState([]);
-  const providerValue = useMemo(() => ({ value, setValue }), [value, setValue]);
+  const [userList, setUserList] = useState([]);
+  const providerValue = useMemo(
+    () => ({ userList, setUserList }),
+    [userList, setUserList]
+  );
   return (
     <BrowserRouter>
       <Header />

@@ -11,16 +11,14 @@ const UserInfo = () => {
   const [repo, setRepo] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`https://api.github.com/users/${login}`)
-      .then((res) => {
-        setUser(res.data);
-      })
-      .catch((error) => console.log(error));
+    const prom1 = axios.get(`https://api.github.com/users/${login}`);
+    const prom2 = axios.get(`https://api.github.com/users/${login}/repos`);
 
-    axios.get(`https://api.github.com/users/${login}/repos`).then((repo) => {
-      setRepo(repo.data).catch((error) => console.log(error));
-    });
+    Promise.all([prom1, prom2])
+      .then(([info, repo]) =>
+        Promise.all([setUser(info.data), setRepo(repo.data)])
+      )
+      .catch((error) => console.log(error));
   }, [login]);
 
   return (

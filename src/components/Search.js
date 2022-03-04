@@ -4,14 +4,14 @@ import Form from "./Form";
 import Profiles from "./Profiles";
 
 const Search = () => {
-  const { value } = useContext(UserContext);
+  const { userList } = useContext(UserContext);
 
   return (
     <div className="m-auto h-full w-4/6 ">
       <Form />
 
       <div className="mt-6 grid w-full grid-cols-3 gap-4">
-        {value.map((item) => {
+        {userList.map((item) => {
           return <Profiles item={item} key={item.id} />;
         })}
       </div>

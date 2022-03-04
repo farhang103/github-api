@@ -1,31 +1,39 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { UserContext } from "../context/userContext";
-import { useRequest } from "../api/request";
+import Request from "../api/request";
+import useFetch from "../api/request";
 
 const Form = () => {
   const [username, setUsername] = useState("");
-  const { setValue } = useContext(UserContext);
+  const { setUserList } = useContext(UserContext);
+  const { data, loading, error } = useFetch(
+    `https://api.github.com/search/users?q=${username}`
+  );
 
   const handleReset = () => {
-    setValue([]);
+    setUserList([]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // useRequest(`https://api.github.com/search/users?q=${username}`);
+    // await Request(`https://api.github.com/search/users?q=${username}`);
 
-    axios
-      .get(`https://api.github.com/search/users?q=${username}`)
-      .then((response) => {
-        if (response.data.total_count !== 0) {
-          setValue(response.data.items);
-        } else {
-          alert("No user found, Try again");
-        }
-      })
-      .catch((error) => console.log(error));
+    // await axios
+    //   .get(`https://api.github.com/search/users?q=${username}`)
+    //   .then((response) => {
+    //     if (response.data.total_count !== 0) {
+    //       setUserList(response.data.items);
+    //     } else {
+    //       alert("No user found, Try again");
+    //     }
+    //   })
+    //   .catch((error) => console.log(error));
+
+    if (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -54,11 +62,11 @@ const Form = () => {
           onClick={handleReset}
           type="reset"
           className="mt-3 rounded border-2 border-red-600 bg-gray-600 p-2 text-lg text-white  hover:bg-red-600 hover:text-white"
-          disabled={
-            username === 0
-              ? console.log("deactive", username)
-              : console.log("active", username)
-          }
+          // disabled={
+          //   username === 0
+          //     ? console.log("deactive", username)
+          //     : console.log("active", username)
+          // }
         >
           Clear
         </button>
